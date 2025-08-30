@@ -1,0 +1,492 @@
+{% extends "base.html" %}
+
+{% block title %}F1 Analytics - AI-Powered Formula 1 Predictions{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section id="home" class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="hero-title floating" data-aos="fade-up">
+                F1 Analytics
+            </h1>
+            <p class="hero-subtitle" data-aos="fade-up" data-aos-delay="300">
+                Experience the future of Formula 1 analytics with AI-powered predictions, 
+                real-time telemetry, and cinematic data visualizations
+            </p>
+            <div class="hero-buttons" data-aos="fade-up" data-aos-delay="600">
+                <a href="{{ url_for('analytics') }}" class="btn-f1">
+                    <i class="fas fa-chart-line me-2"></i>View Analytics
+                </a>
+                <a href="#how-it-works" class="btn-outline-f1">
+                    <i class="fas fa-play me-2"></i>How It Works
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- F1 History Timeline -->
+<section id="history" class="section" style="background: linear-gradient(135deg, rgba(21, 21, 30, 0.95), rgba(225, 6, 0, 0.1));">
+    <div class="container">
+        <h2 class="section-title text-reveal" data-aos="fade-up">
+            The Evolution of Formula 1
+        </h2>
+        <p class="text-center text-muted mb-5" data-aos="fade-up" data-aos-delay="200">
+            From humble beginnings to the pinnacle of motorsport technology
+        </p>
+        
+        <div class="timeline">
+            <div class="timeline-item" data-aos="fade-right">
+                <div class="timeline-content">
+                    <div class="timeline-year">1950</div>
+                    <h4>The Beginning</h4>
+                    <p>The FIA Formula One World Championship begins at Silverstone, marking the start of the most prestigious motorsport series in the world.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item" data-aos="fade-left" data-aos-delay="200">
+                <div class="timeline-content">
+                    <div class="timeline-year">1970s</div>
+                    <h4>Aerodynamic Revolution</h4>
+                    <p>Ground effect and wing technology transform F1, with teams like Lotus pioneering aerodynamic innovations that define modern racing.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item" data-aos="fade-right" data-aos-delay="400">
+                <div class="timeline-content">
+                    <div class="timeline-year">1980s</div>
+                    <h4>Turbo Era</h4>
+                    <p>Turbocharged engines produce over 1000 horsepower in qualifying, pushing the boundaries of speed and engineering excellence.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item" data-aos="fade-left" data-aos-delay="600">
+                <div class="timeline-content">
+                    <div class="timeline-year">1990s</div>
+                    <h4>Electronic Systems</h4>
+                    <p>Semi-automatic gearboxes, traction control, and advanced telemetry systems revolutionize how teams approach racing strategy.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item" data-aos="fade-right" data-aos-delay="800">
+                <div class="timeline-content">
+                    <div class="timeline-year">2000s</div>
+                    <h4>Safety Innovation</h4>
+                    <p>HANS device, improved crash structures, and circuit safety measures dramatically reduce the risk of serious injury.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item" data-aos="fade-left" data-aos-delay="1000">
+                <div class="timeline-content">
+                    <div class="timeline-year">2010s</div>
+                    <h4>Hybrid Technology</h4>
+                    <p>Energy Recovery Systems (ERS) combine traditional engines with electric power, showcasing sustainable racing technology.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item" data-aos="fade-right" data-aos-delay="1200">
+                <div class="timeline-content">
+                    <div class="timeline-year">2020s</div>
+                    <h4>AI & Data Analytics</h4>
+                    <p>Machine learning, predictive analytics, and real-time data processing transform racing strategy and fan experience.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section id="how-it-works" class="section how-it-works">
+    <div class="container">
+        <h2 class="section-title" data-aos="fade-up">
+            How Our AI Predictions Work
+        </h2>
+        <p class="text-center text-muted mb-5" data-aos="fade-up" data-aos-delay="200">
+            Cutting-edge artificial intelligence meets Formula 1 data analytics
+        </p>
+        
+        <!-- Step 1 -->
+        <div class="row mb-5" data-aos="fade-up" data-aos-delay="300">
+            <div class="col-lg-6">
+                <div class="step-card f1-zoom-in">
+                    <div class="step-number">01</div>
+                    <h3 class="step-title">Data Collection</h3>
+                    <p class="step-description">
+                        We gather comprehensive F1 data from official sources including lap times, 
+                        telemetry, weather conditions, driver performance metrics, and historical race results. 
+                        Our system processes over 300 data points per race weekend.
+                    </p>
+                    <div class="mt-4">
+                        <span class="badge bg-danger me-2">Real-time Telemetry</span>
+                        <span class="badge bg-warning me-2">Historical Data</span>
+                        <span class="badge bg-success">Weather Analysis</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 d-flex align-items-center justify-content-center">
+                <div class="visualization-container" data-aos="fade-left" data-aos-delay="500">
+                    <canvas id="data-visualization" width="400" height="300" style="max-width: 100%;"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Step 2 -->
+        <div class="row mb-5" data-aos="fade-up" data-aos-delay="600">
+            <div class="col-lg-6 order-lg-2">
+                <div class="step-card f1-zoom-in">
+                    <div class="step-number">02</div>
+                    <h3 class="step-title">AI Processing</h3>
+                    <p class="step-description">
+                        Our dual AI system powered by Google's Gemini Flash and Groq processes the data using 
+                        advanced machine learning algorithms. We analyze patterns, correlations, and 
+                        historical trends to identify key performance indicators.
+                    </p>
+                    <div class="mt-4">
+                        <span class="badge bg-primary me-2">Gemini Flash</span>
+                        <span class="badge bg-info me-2">Groq Processing</span>
+                        <span class="badge bg-secondary">Pattern Recognition</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 order-lg-1 d-flex align-items-center justify-content-center">
+                <div class="ai-visualization" data-aos="fade-right" data-aos-delay="800">
+                    <div class="ai-brain">
+                        <i class="fas fa-brain fa-5x text-danger"></i>
+                        <div class="ai-pulse"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Step 3 -->
+        <div class="row mb-5" data-aos="fade-up" data-aos-delay="900">
+            <div class="col-lg-6">
+                <div class="step-card f1-zoom-in">
+                    <div class="step-number">03</div>
+                    <h3 class="step-title">Prediction Generation</h3>
+                    <p class="step-description">
+                        The AI generates comprehensive race predictions including qualifying positions, 
+                        race outcomes, optimal strategies, and risk assessments. Each prediction comes 
+                        with confidence scores and detailed reasoning.
+                    </p>
+                    <div class="mt-4">
+                        <span class="badge bg-success me-2">Race Predictions</span>
+                        <span class="badge bg-warning me-2">Strategy Analysis</span>
+                        <span class="badge bg-danger">Risk Assessment</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 d-flex align-items-center justify-content-center">
+                <div class="prediction-showcase" data-aos="fade-left" data-aos-delay="1100">
+                    <div class="prediction-card">
+                        <h5>Race Winner Prediction</h5>
+                        <div class="driver-prediction">
+                            <span class="driver-name">Max Verstappen</span>
+                            <span class="confidence">89% confidence</span>
+                        </div>
+                        <div class="prediction-factors">
+                            <small>Based on: Qualifying pace, tire strategy, weather conditions</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Step 4 -->
+        <div class="row" data-aos="fade-up" data-aos-delay="1200">
+            <div class="col-lg-6 order-lg-2">
+                <div class="step-card f1-zoom-in">
+                    <div class="step-number">04</div>
+                    <h3 class="step-title">Real-time Updates</h3>
+                    <p class="step-description">
+                        During race weekends, our system continuously updates predictions based on 
+                        practice sessions, qualifying results, and changing conditions. Live telemetry 
+                        feeds allow for real-time strategy adjustments.
+                    </p>
+                    <div class="mt-4">
+                        <span class="badge bg-success me-2">Live Updates</span>
+                        <span class="badge bg-primary me-2">Real-time Data</span>
+                        <span class="badge bg-warning">Dynamic Analysis</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 order-lg-1 d-flex align-items-center justify-content-center">
+                <div class="realtime-dashboard" data-aos="fade-right" data-aos-delay="1400">
+                    <div class="live-indicator">
+                        <span class="live-dot"></span>
+                        <span>LIVE</span>
+                    </div>
+                    <div class="mini-chart">
+                        <canvas id="mini-telemetry" width="200" height="100"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Technology Stack -->
+<section class="section" style="background: rgba(225, 6, 0, 0.05);">
+    <div class="container">
+        <h2 class="section-title" data-aos="fade-up">
+            Powered by Advanced Technology
+        </h2>
+        
+        <div class="row g-4 mt-4">
+            <div class="col-md-3" data-aos="fade-up" data-aos-delay="200">
+                <div class="tech-card text-center">
+                    <i class="fab fa-python fa-3x text-warning mb-3"></i>
+                    <h5>Python & Flask</h5>
+                    <p>Robust backend processing and API development</p>
+                </div>
+            </div>
+            <div class="col-md-3" data-aos="fade-up" data-aos-delay="400">
+                <div class="tech-card text-center">
+                    <i class="fas fa-robot fa-3x text-danger mb-3"></i>
+                    <h5>Gemini AI</h5>
+                    <p>Google's advanced language model for data analysis</p>
+                </div>
+            </div>
+            <div class="col-md-3" data-aos="fade-up" data-aos-delay="600">
+                <div class="tech-card text-center">
+                    <i class="fas fa-microchip fa-3x text-success mb-3"></i>
+                    <h5>Groq Processing</h5>
+                    <p>Ultra-fast inference for real-time predictions</p>
+                </div>
+            </div>
+            <div class="col-md-3" data-aos="fade-up" data-aos-delay="800">
+                <div class="tech-card text-center">
+                    <i class="fas fa-chart-area fa-3x text-info mb-3"></i>
+                    <h5>Real-time Charts</h5>
+                    <p>Interactive data visualizations and telemetry</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact" class="section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h2 class="section-title" data-aos="fade-up">
+                    Get In Touch
+                </h2>
+                <p class="lead mb-4" data-aos="fade-up" data-aos-delay="200">
+                    Have questions about our F1 analytics platform? We'd love to hear from you.
+                </p>
+                
+                <div class="contact-info" data-aos="fade-up" data-aos-delay="400">
+                    <a href="mailto:nitishvox@gmail.com" class="contact-email">
+                        <i class="fas fa-envelope me-2"></i>
+                        nitishvox@gmail.com
+                    </a>
+                    <p class="mt-3 text-muted">
+                        We typically respond within 24 hours
+                    </p>
+                </div>
+                
+                <div class="mt-5" data-aos="fade-up" data-aos-delay="600">
+                    <a href="{{ url_for('analytics') }}" class="btn-f1 me-3">
+                        <i class="fas fa-rocket me-2"></i>Start Analyzing
+                    </a>
+                    <a href="{{ url_for('settings') }}" class="btn-outline-f1">
+                        <i class="fas fa-cog me-2"></i>Configure APIs
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Floating Action Button -->
+<div class="floating-action" style="position: fixed; bottom: 30px; right: 30px; z-index: 1000;">
+    <a href="{{ url_for('analytics') }}" class="btn btn-danger rounded-circle" style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(225, 6, 0, 0.4);">
+        <i class="fas fa-chart-line fa-lg"></i>
+    </a>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.tech-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2rem;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(225, 6, 0, 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+}
+
+.tech-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(225, 6, 0, 0.3);
+}
+
+.ai-brain {
+    position: relative;
+    display: inline-block;
+}
+
+.ai-pulse {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    border: 2px solid rgba(225, 6, 0, 0.5);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(2);
+        opacity: 0;
+    }
+}
+
+.prediction-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    border-radius: 10px;
+    border-left: 4px solid #e10600;
+}
+
+.driver-prediction {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 1rem 0;
+}
+
+.driver-name {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.confidence {
+    color: #00d4aa;
+    font-weight: 600;
+}
+
+.realtime-dashboard {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 1.5rem;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.live-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    color: #e10600;
+}
+
+.live-dot {
+    width: 10px;
+    height: 10px;
+    background: #e10600;
+    border-radius: 50%;
+    margin-right: 8px;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0.3; }
+}
+
+.floating-action a:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 25px rgba(225, 6, 0, 0.6);
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Initialize mini visualizations
+document.addEventListener('DOMContentLoaded', function() {
+    // Data visualization canvas
+    const dataCanvas = document.getElementById('data-visualization');
+    if (dataCanvas) {
+        const ctx = dataCanvas.getContext('2d');
+        
+        // Draw animated data bars
+        function drawDataBars() {
+            ctx.clearRect(0, 0, dataCanvas.width, dataCanvas.height);
+            
+            const bars = 8;
+            const barWidth = dataCanvas.width / (bars * 2);
+            
+            for (let i = 0; i < bars; i++) {
+                const height = Math.random() * (dataCanvas.height * 0.8);
+                const x = i * (barWidth * 2) + barWidth / 2;
+                const y = dataCanvas.height - height;
+                
+                // Create gradient
+                const gradient = ctx.createLinearGradient(0, y, 0, dataCanvas.height);
+                gradient.addColorStop(0, '#e10600');
+                gradient.addColorStop(1, '#ff4500');
+                
+                ctx.fillStyle = gradient;
+                ctx.fillRect(x, y, barWidth, height);
+            }
+        }
+        
+        // Animate bars
+        setInterval(drawDataBars, 1500);
+        drawDataBars();
+    }
+    
+    // Mini telemetry chart
+    const miniCanvas = document.getElementById('mini-telemetry');
+    if (miniCanvas) {
+        const ctx = miniCanvas.getContext('2d');
+        let dataPoints = [];
+        
+        function drawMiniChart() {
+            ctx.clearRect(0, 0, miniCanvas.width, miniCanvas.height);
+            
+            // Add new data point
+            dataPoints.push(Math.random() * miniCanvas.height);
+            if (dataPoints.length > 50) {
+                dataPoints.shift();
+            }
+            
+            // Draw line
+            ctx.strokeStyle = '#e10600';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            
+            dataPoints.forEach((point, index) => {
+                const x = (index / dataPoints.length) * miniCanvas.width;
+                const y = miniCanvas.height - point;
+                
+                if (index === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            });
+            
+            ctx.stroke();
+        }
+        
+        setInterval(drawMiniChart, 200);
+    }
+});
+</script>
+{% endblock %}

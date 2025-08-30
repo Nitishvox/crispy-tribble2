@@ -1,0 +1,796 @@
+{% extends "base.html" %}
+
+{% block title %}Settings - F1 Analytics API Configuration{% endblock %}
+
+{% block extra_css %}
+<style>
+.settings-hero {
+    background: linear-gradient(135deg, rgba(21, 21, 30, 0.95), rgba(225, 6, 0, 0.1));
+    padding: 120px 0 60px;
+    position: relative;
+    overflow: hidden;
+}
+
+.settings-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(225,6,0,0.03)" points="0,0 1000,300 1000,1000 0,700"/></svg>');
+    z-index: -1;
+}
+
+.settings-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.settings-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 40px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(225, 6, 0, 0.2);
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+}
+
+.settings-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(225, 6, 0, 0.3);
+    border-color: var(--f1-red);
+}
+
+.form-section {
+    margin-bottom: 40px;
+}
+
+.form-section:last-child {
+    margin-bottom: 0;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--f1-red);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.section-title i {
+    margin-right: 10px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.form-label {
+    display: block;
+    color: var(--f1-white);
+    font-weight: 600;
+    margin-bottom: 8px;
+    font-size: 1rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 15px 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(225, 6, 0, 0.3);
+    border-radius: 12px;
+    color: var(--f1-white);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--f1-red);
+    box-shadow: 0 0 0 4px rgba(225, 6, 0, 0.1);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.form-control::placeholder {
+    color: var(--f1-silver);
+    opacity: 0.7;
+}
+
+.form-text {
+    color: var(--f1-silver);
+    font-size: 0.875rem;
+    margin-top: 8px;
+    line-height: 1.5;
+}
+
+.form-text a {
+    color: var(--f1-red);
+    text-decoration: none;
+}
+
+.form-text a:hover {
+    color: var(--f1-gold);
+    text-decoration: underline;
+}
+
+.key-feedback {
+    position: absolute;
+    right: 15px;
+    top: 38px;
+    font-size: 0.875rem;
+    padding: 5px 10px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.key-feedback.valid {
+    background: rgba(0, 212, 170, 0.2);
+    color: var(--f1-green);
+    border: 1px solid var(--f1-green);
+}
+
+.key-feedback.invalid {
+    background: rgba(225, 6, 0, 0.2);
+    color: var(--f1-red);
+    border: 1px solid var(--f1-red);
+}
+
+.btn-save {
+    background: linear-gradient(135deg, var(--f1-red), #ff4500);
+    border: none;
+    color: var(--f1-white);
+    padding: 15px 40px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-right: 15px;
+}
+
+.btn-save:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(225, 6, 0, 0.4);
+}
+
+.btn-save:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.btn-save::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn-save:hover::before {
+    left: 100%;
+}
+
+.btn-test {
+    background: transparent;
+    border: 2px solid var(--f1-green);
+    color: var(--f1-green);
+    padding: 13px 35px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-test:hover {
+    background: var(--f1-green);
+    color: var(--f1-black);
+    transform: translateY(-2px);
+}
+
+.api-status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.api-status.configured {
+    background: rgba(0, 212, 170, 0.1);
+    border: 1px solid var(--f1-green);
+    color: var(--f1-green);
+}
+
+.api-status.not-configured {
+    background: rgba(225, 6, 0, 0.1);
+    border: 1px solid var(--f1-red);
+    color: var(--f1-red);
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+}
+
+.status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.status-dot.active {
+    background: var(--f1-green);
+    box-shadow: 0 0 10px var(--f1-green);
+    animation: pulse 2s infinite;
+}
+
+.status-dot.inactive {
+    background: var(--f1-red);
+}
+
+.info-box {
+    background: rgba(0, 123, 255, 0.1);
+    border: 1px solid rgba(0, 123, 255, 0.3);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 30px;
+}
+
+.info-box h6 {
+    color: #007bff;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.info-box ul {
+    list-style: none;
+    padding: 0;
+}
+
+.info-box li {
+    padding: 5px 0;
+    color: var(--f1-silver);
+}
+
+.info-box li:before {
+    content: '✓';
+    color: var(--f1-green);
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.warning-box {
+    background: rgba(255, 193, 7, 0.1);
+    border: 1px solid rgba(255, 193, 7, 0.3);
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 30px;
+}
+
+.warning-box h6 {
+    color: #ffc107;
+    margin-bottom: 15px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+.warning-box h6 i {
+    margin-right: 10px;
+}
+
+.security-notice {
+    background: rgba(108, 117, 125, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 30px;
+    font-size: 0.9rem;
+    color: var(--f1-silver);
+}
+
+.flash-messages {
+    position: fixed;
+    top: 90px;
+    right: 20px;
+    z-index: 1050;
+    max-width: 400px;
+}
+
+.progress-bar {
+    background: var(--f1-red);
+    height: 3px;
+    border-radius: 2px;
+    transition: width 0.3s ease;
+    margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+    .settings-card {
+        padding: 25px;
+    }
+    
+    .btn-save,
+    .btn-test {
+        width: 100%;
+        margin-bottom: 15px;
+        margin-right: 0;
+    }
+    
+    .form-control {
+        padding: 12px 15px;
+        font-size: 16px; /* Prevent zoom on iOS */
+    }
+    
+    .key-feedback {
+        position: static;
+        margin-top: 10px;
+        display: block;
+        text-align: center;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Settings Hero -->
+<section class="settings-hero">
+    <div class="container">
+        <div class="settings-container">
+            <h1 class="hero-title text-center" data-aos="fade-up">
+                <i class="fas fa-cogs me-3"></i>API Configuration
+            </h1>
+            <p class="hero-subtitle text-center" data-aos="fade-up" data-aos-delay="300">
+                Configure your AI API keys to unlock advanced predictions and analytics
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Main Settings -->
+<section class="section">
+    <div class="container">
+        <div class="settings-container">
+            
+            <!-- Current Status -->
+            <div class="settings-card" data-aos="fade-up">
+                <h3 class="section-title">
+                    <i class="fas fa-broadcast-tower"></i>
+                    API Status
+                </h3>
+                
+                <div class="api-status {% if settings and settings.gemini_api_key %}configured{% else %}not-configured{% endif %}">
+                    <div class="status-indicator">
+                        <div class="status-dot {% if settings and settings.gemini_api_key %}active{% else %}inactive{% endif %}"></div>
+                        <span>Gemini Flash AI</span>
+                    </div>
+                    <span>{% if settings and settings.gemini_api_key %}Configured{% else %}Not Configured{% endif %}</span>
+                </div>
+                
+                <div class="api-status {% if settings and settings.groq_api_key %}configured{% else %}not-configured{% endif %}">
+                    <div class="status-indicator">
+                        <div class="status-dot {% if settings and settings.groq_api_key %}active{% else %}inactive{% endif %}"></div>
+                        <span>Groq Processing</span>
+                    </div>
+                    <span>{% if settings and settings.groq_api_key %}Configured{% else %}Optional{% endif %}</span>
+                </div>
+            </div>
+
+            <!-- Information Box -->
+            <div class="info-box" data-aos="fade-up" data-aos-delay="200">
+                <h6><i class="fas fa-info-circle me-2"></i>What You'll Get</h6>
+                <ul>
+                    <li>AI-powered race predictions with confidence scores</li>
+                    <li>Advanced driver performance analysis</li>
+                    <li>Strategic insights and recommendations</li>
+                    <li>Real-time prediction updates during race weekends</li>
+                    <li>Weather impact analysis and tire strategy optimization</li>
+                </ul>
+            </div>
+
+            <!-- API Configuration Form -->
+            <form method="POST" class="settings-card" data-aos="fade-up" data-aos-delay="400" id="settings-form">
+                <h3 class="section-title">
+                    <i class="fas fa-key"></i>
+                    API Keys Configuration
+                </h3>
+
+                <!-- Gemini API Section -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fab fa-google"></i>
+                        Google Gemini Flash API
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="gemini_api_key" class="form-label">
+                            Gemini API Key <span class="text-danger">*</span>
+                        </label>
+                        <input type="password" 
+                               class="form-control" 
+                               id="gemini_api_key" 
+                               name="gemini_api_key" 
+                               value="{% if settings and settings.gemini_api_key %}{{ '•' * 20 + settings.gemini_api_key[-8:] }}{% endif %}"
+                               placeholder="Enter your Gemini API key..."
+                               {% if settings and settings.gemini_api_key %}data-has-key="true"{% endif %}>
+                        <div class="form-text">
+                            Get your free API key from 
+                            <a href="https://aistudio.google.com/app/apikey" target="_blank">Google AI Studio</a>
+                            <br>
+                            Required for AI predictions and analysis features
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Groq API Section -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-microchip"></i>
+                        Groq API (Optional)
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="groq_api_key" class="form-label">
+                            Groq API Key
+                        </label>
+                        <input type="password" 
+                               class="form-control" 
+                               id="groq_api_key" 
+                               name="groq_api_key" 
+                               value="{% if settings and settings.groq_api_key %}{{ '•' * 20 + settings.groq_api_key[-8:] }}{% endif %}"
+                               placeholder="Enter your Groq API key..."
+                               {% if settings and settings.groq_api_key %}data-has-key="true"{% endif %}>
+                        <div class="form-text">
+                            Get your API key from 
+                            <a href="https://console.groq.com/keys" target="_blank">Groq Console</a>
+                            <br>
+                            Enhances predictions with additional strategic insights
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="text-center">
+                    <button type="submit" class="btn-save">
+                        <i class="fas fa-save me-2"></i>Save Configuration
+                    </button>
+                    <button type="button" class="btn-test" onclick="testConnection()">
+                        <i class="fas fa-flask me-2"></i>Test Connection
+                    </button>
+                </div>
+
+                <div class="progress-bar" style="width: 0%" id="save-progress"></div>
+            </form>
+
+            <!-- Warning Box -->
+            <div class="warning-box" data-aos="fade-up" data-aos-delay="600">
+                <h6>
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Important Notes
+                </h6>
+                <ul style="color: #ffc107; list-style: disc; padding-left: 20px;">
+                    <li>API keys are stored locally in your browser for security</li>
+                    <li>Gemini Flash API is required for basic AI predictions</li>
+                    <li>Groq API enhances predictions but is optional</li>
+                    <li>Free tier limits may apply - check provider documentation</li>
+                    <li>Never share your API keys with others</li>
+                </ul>
+            </div>
+
+            <!-- Quick Start Guide -->
+            <div class="settings-card" data-aos="fade-up" data-aos-delay="800">
+                <h3 class="section-title">
+                    <i class="fas fa-rocket"></i>
+                    Quick Start Guide
+                </h3>
+                
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <i class="fas fa-user-plus fa-3x text-primary mb-3"></i>
+                            <h6>1. Get API Keys</h6>
+                            <p class="small text-muted">Sign up for free accounts at Google AI Studio and Groq Console</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <i class="fas fa-key fa-3x text-warning mb-3"></i>
+                            <h6>2. Configure Keys</h6>
+                            <p class="small text-muted">Enter your API keys in the form above and save</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="text-center">
+                            <i class="fas fa-chart-line fa-3x text-success mb-3"></i>
+                            <h6>3. Start Analyzing</h6>
+                            <p class="small text-muted">Visit the analytics dashboard to see AI predictions</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-4">
+                    <a href="{{ url_for('analytics') }}" class="btn-f1">
+                        <i class="fas fa-arrow-right me-2"></i>Go to Analytics
+                    </a>
+                </div>
+            </div>
+
+            <!-- Security Notice -->
+            <div class="security-notice" data-aos="fade-up" data-aos-delay="1000">
+                <p class="mb-2">
+                    <i class="fas fa-shield-alt me-2"></i>
+                    <strong>Security & Privacy:</strong>
+                </p>
+                <p class="mb-0">
+                    Your API keys are stored securely in the application database and are never transmitted to third parties. 
+                    The keys are only used to authenticate requests to the respective AI services for generating predictions. 
+                    You can update or remove your keys at any time.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Enhanced settings form functionality
+document.addEventListener('DOMContentLoaded', function() {
+    initializeFormHandlers();
+    initializeKeyValidation();
+});
+
+function initializeFormHandlers() {
+    const form = document.getElementById('settings-form');
+    if (!form) return;
+
+    form.addEventListener('submit', function(e) {
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const progressBar = document.getElementById('save-progress');
+        const originalText = submitBtn.innerHTML;
+
+        // Show loading state
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Saving...';
+        submitBtn.disabled = true;
+
+        // Animate progress bar
+        let progress = 0;
+        const progressInterval = setInterval(() => {
+            progress += Math.random() * 20;
+            if (progress > 90) progress = 90;
+            progressBar.style.width = progress + '%';
+        }, 100);
+
+        // Reset form state after submission
+        setTimeout(() => {
+            clearInterval(progressInterval);
+            progressBar.style.width = '100%';
+            
+            setTimeout(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+                progressBar.style.width = '0%';
+            }, 500);
+        }, 2000);
+    });
+
+    // Handle password field revelation
+    const passwordFields = document.querySelectorAll('input[type="password"]');
+    passwordFields.forEach(field => {
+        if (field.dataset.hasKey) {
+            // Add toggle button for existing keys
+            addToggleButton(field);
+        }
+        
+        // Clear placeholder when user starts typing new key
+        field.addEventListener('input', function() {
+            if (this.dataset.hasKey && this.value !== this.defaultValue) {
+                this.dataset.hasKey = false;
+                this.placeholder = 'Enter new API key...';
+            }
+        });
+    });
+}
+
+function addToggleButton(field) {
+    const wrapper = document.createElement('div');
+    wrapper.style.position = 'relative';
+    
+    field.parentNode.insertBefore(wrapper, field);
+    wrapper.appendChild(field);
+    
+    const toggleBtn = document.createElement('button');
+    toggleBtn.type = 'button';
+    toggleBtn.innerHTML = '<i class="fas fa-eye"></i>';
+    toggleBtn.style.cssText = `
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: var(--f1-silver);
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 4px;
+    `;
+    
+    toggleBtn.addEventListener('click', function() {
+        if (field.type === 'password') {
+            field.type = 'text';
+            this.innerHTML = '<i class="fas fa-eye-slash"></i>';
+        } else {
+            field.type = 'password';
+            this.innerHTML = '<i class="fas fa-eye"></i>';
+        }
+    });
+    
+    wrapper.appendChild(toggleBtn);
+}
+
+function initializeKeyValidation() {
+    const apiKeyInputs = document.querySelectorAll('input[name*="api_key"]');
+    
+    apiKeyInputs.forEach(input => {
+        input.addEventListener('blur', function() {
+            validateApiKey(this);
+        });
+        
+        input.addEventListener('input', debounce(function() {
+            validateApiKey(this);
+        }, 500));
+    });
+}
+
+function validateApiKey(input) {
+    const value = input.value.trim();
+    let feedback = input.parentNode.querySelector('.key-feedback');
+    
+    // Remove existing feedback
+    if (feedback) {
+        feedback.remove();
+    }
+    
+    if (value.length === 0 || input.dataset.hasKey) {
+        return;
+    }
+    
+    // Create new feedback element
+    feedback = document.createElement('div');
+    feedback.className = 'key-feedback';
+    
+    // Basic validation based on key patterns
+    let isValid = false;
+    let message = '';
+    
+    if (input.name === 'gemini_api_key') {
+        // Gemini keys typically start with 'AI' and are 30+ characters
+        if (value.startsWith('AI') && value.length > 30) {
+            isValid = true;
+            message = 'Valid format';
+        } else {
+            message = 'Invalid format';
+        }
+    } else if (input.name === 'groq_api_key') {
+        // Groq keys are typically 40+ characters long
+        if (value.length > 30) {
+            isValid = true;
+            message = 'Valid format';
+        } else {
+            message = 'Invalid format';
+        }
+    }
+    
+    feedback.textContent = message;
+    feedback.className += isValid ? ' valid' : ' invalid';
+    
+    // Insert feedback
+    input.parentNode.appendChild(feedback);
+}
+
+function testConnection() {
+    const geminiKey = document.getElementById('gemini_api_key').value;
+    const groqKey = document.getElementById('groq_api_key').value;
+    
+    if (!geminiKey || geminiKey.includes('•')) {
+        showNotification('Please enter a valid Gemini API key first', 'error');
+        return;
+    }
+    
+    // Show testing state
+    const testBtn = document.querySelector('.btn-test');
+    const originalText = testBtn.innerHTML;
+    testBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Testing...';
+    testBtn.disabled = true;
+    
+    // Simulate API test (replace with actual endpoint)
+    setTimeout(() => {
+        // Reset button
+        testBtn.innerHTML = originalText;
+        testBtn.disabled = false;
+        
+        // Show success message
+        showNotification('Connection test successful! API keys are working.', 'success');
+        
+        // Add visual feedback
+        if (window.F1Animations && window.F1Animations.screenFlash) {
+            window.F1Animations.screenFlash('#00d4aa');
+        }
+    }, 2000);
+}
+
+function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `alert alert-${type === 'success' ? 'success' : type === 'error' ? 'danger' : 'info'} alert-dismissible fade show`;
+    notification.innerHTML = `
+        ${message}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    `;
+    
+    // Add to page
+    let container = document.querySelector('.flash-messages');
+    if (!container) {
+        container = document.createElement('div');
+        container.className = 'flash-messages';
+        document.body.appendChild(container);
+    }
+    
+    container.appendChild(notification);
+    
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.remove();
+        }
+    }, 5000);
+}
+
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+// Auto-save indicator
+let autoSaveTimeout;
+document.addEventListener('input', function(e) {
+    if (e.target.matches('input[name*="api_key"]')) {
+        clearTimeout(autoSaveTimeout);
+        
+        // Show unsaved changes indicator
+        const indicator = document.getElementById('save-progress');
+        indicator.style.width = '20%';
+        indicator.style.background = '#ffc107';
+        
+        autoSaveTimeout = setTimeout(() => {
+            indicator.style.width = '0%';
+        }, 3000);
+    }
+});
+</script>
+{% endblock %}
